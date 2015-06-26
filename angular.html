@@ -24,7 +24,15 @@
   				that.customers = data;
   			})
   			that.addCustomer = function() {
+  				that.error=null;
   				that.newCustomer.date_created = new Date();
+  				for (idx in that.customers) {
+  					if(that.newCustomer.name == that.customers[idx].name){
+  						that.error = "You've already added that name.";
+  						that.newCustomer = {};
+  						return false;
+  					}
+  				}
   				that.customers.push(that.newCustomer);
   				that.newCustomer = {};
   			}
@@ -43,6 +51,11 @@
 	table {
 		margin-top: 40px;
 	}
+
+	.error {
+		color: red;
+		margin-top: 10px;
+	}
     </style>
 </head>
 <body>
@@ -54,6 +67,9 @@
 					Input customer: <input type="text" ng-model="c1.newCustomer.name">
 					<input type="submit" ng-click='c1.addCustomer()' value='Add Customer'>
 					Search Friends<input type="text" ng-model='c1.filter_name'>
+					<div ng-if="c1.error">
+						<p class="error" ng-bind="c1.error"></p>
+					</div>
 					<table class="table table-bordered table-hover">
 						<thead>
 							<tr>
